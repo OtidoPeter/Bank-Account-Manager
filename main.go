@@ -19,10 +19,35 @@ func main() {
 	switch choice {
 	case 1:
 		var depositAmount float64
-		fmt.Print("Your deposit amount: ")
+		fmt.Print("Your Deposit Amount: ")
 		fmt.Scan(&depositAmount)
+
+		if depositAmount <= 0 {
+			fmt.Println("Invalid amount! Should be greater than 0.")
+			return
+		}
 
 		accountBalance += depositAmount
 		fmt.Println("Your updated account balance:", accountBalance)
+	case 2:
+		var withdrawalAmount float64
+		fmt.Print("Your Withdrawal Amount: ")
+		fmt.Scan(&withdrawalAmount)
+
+		if withdrawalAmount > accountBalance {
+			fmt.Println("Invalid amount! Not enough money in your bank account.")
+			return
+		}
+		if withdrawalAmount <= 0 {
+			fmt.Println("Invalid amount! Should be greater than 0.")
+			return
+		}
+
+		accountBalance -= withdrawalAmount
+		fmt.Println("Your updated account balance:", accountBalance)
+	case 3:
+		fmt.Println("Your Account Balance:", accountBalance)
+	default:
+		fmt.Print("Goodbye!")
 	}
 }
