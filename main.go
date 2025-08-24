@@ -1,9 +1,39 @@
 package main
 
-import "fmt"
+import (
+	"errors"
+	"fmt"
+	"os"
+	"strconv"
+)
+
+const accountBalanceFile = "balance.txt"
+
+func getBalanceFromFile() (float64, error) {
+	data, err := os.ReadFile(accountBalanceFile)
+	if err != nil {
+		return 1000, errors.New("Failed to find file")
+	}
+	balanceText := string(data)
+	balance, err := strconv.ParseFloat(balanceText, 64)
+	if err != nil {
+		return 1000, errors.New("Failed to parse value to float")
+	}
+	return balance, nil
+}
+
+func writeBalanceToFile(balance float64) {
+	balanceText := fmt.Sprint(balance)
+	os.WriteFile(accountBalanceFile, []byte(balanceText), 0644)
+}
 
 func main() {
-	accountBalance := 1000.0
+	accountBalance, err := getBalanceFromFile()
+	if err != nil {
+		fmt.Println("ERROR")
+		fmt.Println(err)
+		fmt.Println("-----------------")
+	}
 	accountBalancePtr := &accountBalance
 	fmt.Println("Welcome to Go Bank Account Manager")
 
@@ -26,11 +56,13 @@ func main() {
 
 			if depositAmount <= 0 {
 				fmt.Println("Invalid amount! Should be greater than 0.")
-				return
+				//return
+				continue
 			}
 
 			*accountBalancePtr += depositAmount
 			fmt.Println("Your updated account balance:", *accountBalancePtr)
+			writeBalanceToFile(*accountBalancePtr)
 		case 2:
 			var withdrawalAmount float64
 			fmt.Print("Your Withdrawal Amount: ")
@@ -38,19 +70,23 @@ func main() {
 
 			if withdrawalAmount > *accountBalancePtr {
 				fmt.Println("Invalid amount! Not enough money in your bank account.")
-				return
+				//return
+				continue
 			}
 			if withdrawalAmount <= 0 {
 				fmt.Println("Invalid amount! Should be greater than 0.")
-				return
+				//return
+				continue
 			}
 
 			*accountBalancePtr -= withdrawalAmount
 			fmt.Println("Your updated account balance:", *accountBalancePtr)
+			writeBalanceToFile(*accountBalancePtr)
 		case 3:
 			fmt.Println("Your Account Balance:", *accountBalancePtr)
 		default:
 			fmt.Print("Goodbye!")
+			return
 		}
 	}
 
