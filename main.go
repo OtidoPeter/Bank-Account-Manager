@@ -38,11 +38,7 @@ func main() {
 	fmt.Println("Welcome to Go Bank Account Manager")
 
 	for /*i := 0; i < 2; i++ */ {
-		fmt.Println("What do you want to do?")
-		fmt.Println("1. Deposit")
-		fmt.Println("2. Withdraw")
-		fmt.Println("3. Check Balance")
-		fmt.Println("4. Exit")
+		operations()
 
 		var choice int
 		fmt.Print("Your choice: ")
