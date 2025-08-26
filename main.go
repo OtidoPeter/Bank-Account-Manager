@@ -2,12 +2,14 @@ package main
 
 import (
 	"fmt"
+
+	"example.com/bankaccountmanager-app/fileops"
 )
 
 const accountBalanceFile = "balance.txt"
 
 func main() {
-	accountBalance, err := GetFloatFromFile(accountBalanceFile)
+	accountBalance, err := fileops.GetFloatFromFile(accountBalanceFile)
 	if err != nil {
 		fmt.Println("ERROR")
 		fmt.Println(err)
@@ -37,7 +39,7 @@ func main() {
 
 			*accountBalancePtr += depositAmount
 			fmt.Println("Your updated account balance:", *accountBalancePtr)
-			WriteFloatToFile(accountBalanceFile, *accountBalancePtr)
+			fileops.WriteFloatToFile(accountBalanceFile, *accountBalancePtr)
 		case 2:
 			var withdrawalAmount float64
 			fmt.Print("Your Withdrawal Amount: ")
@@ -56,7 +58,7 @@ func main() {
 
 			*accountBalancePtr -= withdrawalAmount
 			fmt.Println("Your updated account balance:", *accountBalancePtr)
-			WriteFloatToFile(accountBalanceFile, *accountBalancePtr)
+			fileops.WriteFloatToFile(accountBalanceFile, *accountBalancePtr)
 		case 3:
 			fmt.Println("Your Account Balance:", *accountBalancePtr)
 		default:
